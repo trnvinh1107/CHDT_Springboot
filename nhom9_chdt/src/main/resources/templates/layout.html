@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="stylesheet" href="/css/style.css" />
+  <meta charset="UTF-8">
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+  <!-- Liên kết thư viện Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+  <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+  <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<header th:fragment="header">
+  <div class="header">
+    <div class="logo">
+      <a href="/">
+        <img src="/images/logo_header.jpg" alt="">
+      </a>
+    </div>
+    <div class="search-header">
+      <form class="d-flex" th:action="@{/dienthoais/search}"
+            method="get">
+        <input class="form-control me-2" type="search"
+               placeholder="Search" aria-label="Search" name="keyword">
+        <button class="btn btn-outline-success"
+                type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+  <nav style="background-color:black;" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light justify-content-evenly bg-black border-bottom box-shadow mb-3">
+    <div class="container">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse d-sm-flex justify-content-between">
+        <ul class="navbar-nav flex-grow-1">
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/">Trang chủ</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/gioithieu">Giới thiệu</a>
+          </li>
+          <li class="nav-item">
+            <ul class="nav navbar-nav navbar-right">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Điện Thoại
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="/dienthoais/dienthoai/1">Apple</a>
+                  <a class="dropdown-item" href="/dienthoais/dienthoai/2">Samsung</a>
+                  <a class="dropdown-item" href="/dienthoais/dienthoai/3">Xiaomi</a>
+                  <a class="dropdown-item" href="/dienthoais/dienthoai/4">Realmi</a>
+                  <a class="dropdown-item" href="/dienthoais/dienthoai/5">Oppo</a>
+                  <a class="dropdown-item" href="/dienthoais/dienthoai/6">Vivo</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="/dienthoais/danhsach">Danh Sách Điện Thoại</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="/dienthoais">Quản lý Điện Thoại</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a class="nav-link text-white" href="/dichvusuachua">Dịch vụ sửa chữa</a>
+          </li>
+          <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN','USER')">
+            <a class="nav-link text-white" href="/cart">
+              Giỏ hàng
+            </a>
+          </li>
+          <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN', 'NV')">
+            <ul class="nav navbar-nav navbar-right">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Danh mục
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="/role/2" sec:authorize="hasAnyAuthority('ADMIN')">Nhân viên</a>
+                  <a class="dropdown-item" href="/role/3" sec:authorize="hasAnyAuthority('ADMIN','NV')">Khách hàng</a>
+                  <a class="dropdown-item" href="/hoadons" sec:authorize="hasAnyAuthority('ADMIN','NV')">Hoá đơn</a>
+                  <a class="dropdown-item" href="/loaidienthoais" sec:authorize="hasAnyAuthority('ADMIN')">Loại điện thoại</a>
+<!--                  <div class="dropdown-divider"></div>-->
+<!--                  <a class="dropdown-item" href="">Thống kê</a>-->
+                </div>
+              </li>
+            </ul>
+          </li>
+          <li sec:authorize="isAuthenticated()">
+            <form th:action="@{/logout}" method="post" style="display:flex; margin-top:10xp;">
+              <p th:text="${#authentication.principal.username}" class="text-white" style="text-transform: uppercase;width: 70px; margin-top:10px"></p>
+              <button class="btn btn-outline-danger"
+                      type="submit">Logout
+              </button>
+            </form>
+          </li>
+          <li sec:authorize="!isAuthenticated()">
+            <a class="btn btn-outline-primary" href="/login">
+              Login
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="container">
+  <div th:fragment="content"></div>
+</div>
+<footer th:fragment="footer" class="footer mt-auto py-3">
+  <div class="container">
+    <div class="foot__menu">
+      <div class="info">
+        <h3><span>KhoaiTei Shop</span> (Uy tín tạo nên thương hiệu)</h3>
+        <p style="font-size:18px">
+          Chúng tôi tin vào dịch vụ của mình và bạn biết điều đó.
+        </p>
+        <a href="/">
+          <img src="/images/logo_footer.jpg" alt="" width="250px">
+        </a>
+      </div>
+      <div class="line"></div>
+      <div class="support">
+        <h5>Bạn cần hỗ trợ</h5>
+        <p>Email: vinhtranthe117@gmail.com</p>
+        <p>Phone: 0935851107 </p>
+        <p><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d979.2362026355078!2d106.9117401614032!3d10.967538458599513!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174ddf600bf14c1%3A0x2e6781657d3a9c92!2zR2nDoW8geOG7qSBOZ-G7jWMgxJDhu5NuZyAtIEdpw6FvIEjhuqF0IEjDsmEgVGhhbmggLSBHacOhbyBwaOG6rW4gWHXDom4gTOG7mWM!5e0!3m2!1svi!2sus!4v1680445063434!5m2!1svi!2sus" width="94%" height="100" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></p>
+      </div>
+      <div class="line"></div>
+      <div class="foot-menu">
+        <h5>Danh mục</h5>
+        <ul>
+          <li>
+            <a href="/">Trang chủ</a>
+          </li>
+          <li>
+            <a href="/gioithieu">Giới thiệu</a>
+          </li>
+          <li>
+            <a href="/dienthoais/danhsach">Sản phẩm</a>
+          </li>
+          <li>
+            <a href="/cart">Đặt hàng</a>
+          </li>
+        </ul>
+      </div>
+      <div class="followus">
+        <h5>Mạng xã hội</h5>
+        <ul>
+          <li>
+            <a href="https://www.facebook.com/vin1107/">Facebook</a>
+          </li>
+          <li>
+            <a href="https://www.instagram.com/_trn.vinh/">Instagram</a>
+          </li>
+          <li>
+            <a href="https://www.tiktok.com/_trn.vinh">Tiktok</a>
+          </li>
+          <li>
+            <a href="https://mobile.twitter.com/vysky30">Twitter</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="line-end"></div>
+    <div class="foot--end">
+      <p>© 2023 - Designed by _trn.vinh</p>
+    </div>
+  </div>
+  <script th:src="@{/js/bootstrap.min.js}"></script>
+  <script th:src="@{/js/jquery-3.7.0.min.js}"></script>
+</footer>
+<script src="js/script.js"></script>
+</body>
+</html>
